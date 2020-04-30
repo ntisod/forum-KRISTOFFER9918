@@ -20,8 +20,8 @@
 <?php
 
   // define variables and set to empty values
-  $firstNameErr = $emailErr = $lastNameErr = $pwErr = $websiteErr = "";
-  $firstName = $lastName = $email = $pw = $comment = $website = "";
+  $emailErr = $pwErr = $websiteErr = "";
+  $email = $pw = $comment = $website = "";
   $err = false;
 
   
@@ -34,31 +34,6 @@
       require("../templates/userdata.php");
   } else{ //Annars
       echo "<p>Inte första gången</p>";
-
-      //Kontroller om formuläret är rätt ifyllt
-      if (empty($_POST["first-name"])) {
-        $firstNameErr = "First Name is required!!!";
-        $err=true;
-      } else {
-        $firstName = test_input($_POST["first-name"]);
-        // check if name only contains letters and whitespace
-        if (!preg_match("/^[a-zA-Z ]*$/",$firstName)) {
-          $firstNameErr = "Only letters and white space allowed";
-          $err=true;
-        }
-      }
-
-      if (empty($_POST["last-name"])) {
-        $lastNameErr = "last-name is required";
-        $err=true;
-      } else {
-        $lastName = test_input($_POST["last-name"]);
-        // check if name only contains letters and whitespace
-        if (!preg_match("/^[a-zA-Z ]*$/",$lastName)) {
-          $lastNameErr = "Only letters and white space allowed";
-          $err=true;
-        }
-      }
     
       if (empty($_POST["email"])) {
         $emailErr = "Email is required";
@@ -88,7 +63,7 @@
       
 
       //Kontroll just nu. Ska tas bort
-      echo    ( $firstName . "<br>" . $lastName . "<br>" . $email . "<br>" . $pw . "<br>" . $comment . "<br>" . $website);
+      echo    ($email . "<br>" . $pw . "<br>" );
 
       //Om formuläret är rätt ifyllt
       if(!$err){
@@ -121,7 +96,7 @@
           // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //Skapa SQL-kommando
-            $sql = "INSERT INTO users (name, lastname, email, regdate, password) VALUES ('$firstName', '$lastName', '$email', NOW(), '$hashed')";
+            $sql = "INSERT INTO users (email, regdate, password) VALUES ('$email', NOW(), '$hashed')";
             // use exec() because no results are returned
             $conn->exec($sql);
           //Visa välkomstmeddelande
@@ -143,7 +118,7 @@
 
       }else{      //Annars
         //Visa formulär med värden ifyllda 
-        require("../templates/userdata.php");
+        require("../templates/loginform.php");
       }
 
   }
